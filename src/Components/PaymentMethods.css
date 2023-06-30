@@ -1,0 +1,15 @@
+.payment-methods-container {
+  background-color: #fafafa;
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 90px;
+  margin-top: 5%;
+}
+
+.payment-methods-container img {
+  width: 16%;
+  margin-left: 70px;
+}

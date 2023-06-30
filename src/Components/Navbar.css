@@ -1,0 +1,134 @@
+.navbar {
+  background-color: #cebbc3;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0px 0px 10px rgba(223, 204, 204, 0.2);
+}
+
+.logo {
+  color: #f7f3f3;
+  font-size: 24px;
+}
+
+.nombre-logo {
+  padding-right: 400px;
+  color: rgb(175, 38, 45);
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  font-size: 25px;
+}
+
+.menu-navbar {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 100px;
+  font-size: 20px;
+}
+
+.nav-menu {
+  list-style: none;
+  display: flex;
+}
+
+.nav-menu li {
+  margin-left: 20px;
+}
+
+.nav-menu a {
+  text-decoration: none;
+  color: #020202;
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+.nav-menu a:hover {
+  color: #da2c60;
+}
+
+.categorias {
+  font-weight: bold;
+  color: #ffffff;
+  position: relative;
+  z-index: 2;
+  cursor: pointer;
+  text-decoration-line: none;
+}
+
+.categorias:hover {
+  color: rgb(58, 95, 46);
+}
+
+.categorias li:hover {
+  color: aqua;
+}
+
+.arrow {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #ffffff;
+  margin-left: 5px;
+  transition: transform 0.3s ease;
+}
+
+.arrow.up {
+  transform: rotate(180deg);
+}
+
+.categorias.show {
+  display: block;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background-color: #cebbc3;
+  padding: 10px;
+  margin-top: 5px;
+  box-shadow: 0px 0px 10px rgba(223, 204, 204, 0.2);
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-menu li {
+  margin-bottom: 5px;
+}
+
+.active-link {
+  color: #da2c60;
+}
+
+.navbar .dropdown-toggle::after {
+  transition: transform 0.3s ease;
+}
+
+.navbar .dropdown.show .dropdown-toggle::after {
+  color: black;
+  transform: rotate(180deg);
+}
+
+.carousel-container {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+
+.carousel-item {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-item.active {
+  display: block;
+}
