@@ -33,34 +33,7 @@ const BookList = () => {
           "9780440412670",
           "9780425288856",
           "9789654487658",
-          "9781423776345",
-          "9781521451755",
-          "9780810994737",
-          "9788441520127",
-          "9781563895722",
-          "8934974080336",
-          "9781417751723",
-          "9781897767160",
-          "9789573318002",
-          "9780439784542",
-          "9780062060617",
-          "9786047703739",
-          "9788497774208",
-          "9789707752993",
-          "9788484317395",
-          "9783741624759",
-          "9788427209886",
-          "9781603844666",
-          "9780794513474",
-          "9780545581608",
-          "9783827241122",
-          "9788491713234",
-          "9781563893346",
-          "9780060006983",
-          "9781781276341",
-          "9780237526481",
         ];
-
         const promises = bookIds.map((bookId) =>
           axios.get(
             `https://openlibrary.org/api/books?bibkeys=${bookId}&format=json&jscmd=data`
@@ -68,22 +41,50 @@ const BookList = () => {
         );
 
         const responses = await Promise.all(promises);
-        const booksData = responses.map(
-          (response) => response.data[Object.keys(response.data)[0]]
+        const booksData = responses.map((response) => {
+          const responseData = response.data[Object.keys(response.data)[0]];
+          return responseData ? responseData : null;
+        });
+
+        const validBooksData = booksData.filter(
+          (bookData) => bookData !== null
         );
 
-        // Obtener imágenes de portada para cada libro
         const booksWithImages = await Promise.all(
-          booksData.map(async (book) => {
-            const coverResponse = await axios.get(
-              `https://openlibrary.org/api/volumes/brief/isbn/${book.isbn[0]}.json`
-            );
-            const coverId = coverResponse.data.items[0].cover.id;
-            const coverUrl = `https://covers.openlibrary.org/b/id/${coverId}-L.jpg`;
-            return {
-              ...book,
-              coverUrl,
-            };
+          validBooksData.map(async (book) => {
+            const isbn = book.isbn && book.isbn[0];
+
+            if (!isbn) {
+              return book;
+            }
+
+            try {
+              const coverResponse = await axios.get(
+                `https://openlibrary.org/api/volumes/brief/isbn/${isbn}.json`
+              );
+
+              const coverId =
+                coverResponse.data &&
+                coverResponse.data.items &&
+                coverResponse.data.items[0] &&
+                coverResponse.data.items[0].cover &&
+                coverResponse.data.items[0].cover.id;
+
+              if (coverId) {
+                const coverUrl = `https://covers.openlibrary.org/b/id/${coverId}-L.jpg`;
+                return {
+                  ...book,
+                  coverUrl,
+                };
+              }
+            } catch (error) {
+              console.error(
+                `Error al obtener la imagen para el libro con ISBN ${isbn}:`,
+                error
+              );
+            }
+
+            return book;
           })
         );
 
@@ -181,8 +182,8 @@ const BookList = () => {
         <ul className="book-list">
           {books.map((book) => (
             <li className="book-item" key={book.key}>
-              {book?.title && <h3>{book.title}</h3>}
-              {book?.coverUrl ? (
+              {book.title && <h3>{book.title}</h3>}
+              {book.coverUrl ? (
                 <img src={book.coverUrl} alt={book.title} />
               ) : (
                 <p>No hay imagen disponible para este libro.</p>
@@ -206,11 +207,11 @@ const BookList = () => {
                 className="ov-btn-slide-top"
                 onClick={(event) => addToCart(event, book)}
               >
-                <FaShoppingCart size={20} /> Añadir al Carrito
+                <FaShoppingCart size={20} /><b>Añadir al Carrito</b> 
               </a>
               <a href="#" className="ov-btn-slide-close">
                 <FaBook size={20} />
-                Ver Más Detalles
+               <b> Ver Más Detalles</b>
               </a>
             </li>
           ))}
@@ -233,8 +234,8 @@ const BookList = () => {
           <div className="cart-content">
             {cart.map((book) => (
               <div className="cart-item" key={book.key}>
-                {book?.title && <h3>{book.title}</h3>}
-                {book?.coverUrl ? (
+                {book.title && <h3>{book.title}</h3>}
+                {book.coverUrl ? (
                   <img src={book.coverUrl} alt={book.title} />
                 ) : (
                   <p>No hay imagen disponible para este libro.</p>

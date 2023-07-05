@@ -12,6 +12,14 @@
   font-size: 24px;
 }
 
+.logo span {
+  color: red;
+  font-size: 35px;
+  position: relative;
+  bottom: 20px;
+  margin-left: 10px;
+}
+
 .nombre-logo {
   padding-right: 400px;
   color: rgb(175, 38, 45);

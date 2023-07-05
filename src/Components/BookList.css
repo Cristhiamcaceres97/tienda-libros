@@ -1,3 +1,7 @@
+body {
+  background-color: rgb(156, 156, 179);
+}
+
 .book-list {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -5,9 +9,16 @@
   list-style: none;
 }
 
+
 .book-item {
   border: 1px solid #ccc;
   padding: 20px;
+  background-color: rgb(219, 200, 200);
+  cursor: pointer;
+}
+
+.book-item:hover {
+  background-color: rgb(226, 226, 238);
 }
 
 .book-item h3 {
@@ -116,13 +127,20 @@
 .ov-btn-slide-top {
   background: #fff;
   color: #4741d7;
-  border: 2px solid #4741d7;
+  border: 1px solid gray;
   padding: 16px 20px;
   border-radius: 3px;
   position: relative;
   z-index: 1;
   overflow: hidden;
   display: inline-block;
+  margin-left: 35px;
+  text-decoration: none;
+  margin-top: 20px;
+}
+
+.ov-btn-slide-top b {
+  padding-left: 10px;
 }
 .ov-btn-slide-top:hover {
   color: #fff;
@@ -153,14 +171,22 @@
 .ov-btn-slide-close {
   background: #fff;
   color: #4741d7;
-  border: 2px solid #4741d7;
+  border: 1px solid gray;
   padding: 16px 20px;
   border-radius: 3px;
   position: relative;
   z-index: 1;
   overflow: hidden;
   display: inline-block;
+  margin-left: 35px;
+  width: 150px;
+  text-decoration: none;
 }
+
+.ov-btn-slide-close b {
+  padding-left: 10px;
+}
+
 .ov-btn-slide-close:before,
 .ov-btn-slide-close:after {
   content: "";

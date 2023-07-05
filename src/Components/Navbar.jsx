@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import "./Navbar.css";
 
 const Navbar = () => {
@@ -18,9 +18,9 @@ const Navbar = () => {
           width="100px"
           alt="logo"
         />
+        <span>Paco's Book</span>
       </div>
       <ul className="nav-menu">
-        <li className="nombre-logo">Paco's Book</li>
         <div className="menu-navbar">
           <li>
             <NavLink to="/" exact activeClassName="active-link">
@@ -52,54 +52,54 @@ const Navbar = () => {
             </span>
             <ul className={`dropdown-menu ${showCategoriesMenu ? "show" : ""}`}>
               <li>
-                <NavLink to="/cientificos" activeClassName="active-link">
+                <Link activeClassName="active-link">
                   Científicos
-                </NavLink>
+                </Link>
               </li>
               <li>
-                <NavLink to="/literatura" activeClassName="active-link">
+                <Link activeClassName="active-link">
                   Literatura
-                </NavLink>
+                </Link>
               </li>
               <li>
-                <NavLink to="/viaje" activeClassName="active-link">
+                <Link  activeClassName="active-link">
                   De viaje
-                </NavLink>
+                </Link>
               </li>
               <li>
-                <NavLink to="/biografias" activeClassName="active-link">
+                <Link activeClassName="active-link">
                   Biografías
-                </NavLink>
+                </Link>
               </li>
               <li>
-                <NavLink to="/referencias" activeClassName="active-link">
+                <Link activeClassName="active-link">
                   Referencias
-                </NavLink>
+                </Link>
               </li>
               <li>
-                <NavLink to="/monografias" activeClassName="active-link">
+                <Link activeClassName="active-link">
                   Monografías
-                </NavLink>
+                </Link>
               </li>
               <li>
-                <NavLink to="/drama" activeClassName="active-link">
+                <Link  activeClassName="active-link">
                   Drama misterio
-                </NavLink>
+                </Link>
               </li>
               <li>
-                <NavLink to="/terror" activeClassName="active-link">
+                <Link  activeClassName="active-link">
                   Terror
-                </NavLink>
+                </Link>
               </li>
               <li>
-                <NavLink to="/magia" activeClassName="active-link">
+                <Link  activeClassName="active-link">
                   Magia
-                </NavLink>
+                </Link>
               </li>
               <li>
-                <NavLink to="/otros" activeClassName="active-link">
+                <Link  activeClassName="active-link">
                   Otros
-                </NavLink>
+                </Link>
               </li>
             </ul>
           </li>
