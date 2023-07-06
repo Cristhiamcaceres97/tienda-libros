@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { FaShoppingCart, FaBook, FaTrashAlt } from "react-icons/fa";
 import axios from "axios";
 import "./BookList.css";
+import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const BookList = () => {
   const [books, setBooks] = useState([]);
@@ -168,7 +171,11 @@ const BookList = () => {
   return (
     <div>
       <h2 className="cart-container">
-        <button className="cart-button" onClick={() => setCartVisible(true)}>
+        <button
+          className="cart-button"
+          onClick={() => setCartVisible(!cartVisible)}
+          aria-label="Toggle Cart"
+        >
           <FaShoppingCart
             className={`cart-icon ${bounce ? "bounce" : ""}`}
             onAnimationEnd={onAnimationEnd}
@@ -179,43 +186,48 @@ const BookList = () => {
         </button>
       </h2>
       {books.length > 0 ? (
-        <ul className="book-list">
+        <div className="book-list">
           {books.map((book) => (
-            <li className="book-item" key={book.key}>
-              {book.title && <h3>{book.title}</h3>}
+            <Card key={book.key} className="book-item">
               {book.coverUrl ? (
-                <img src={book.coverUrl} alt={book.title} />
+                <Card.Img variant="top" src={book.coverUrl} alt={book.title} />
               ) : (
-                <p>No hay imagen disponible para este libro.</p>
+                <div className="no-image">
+                  <span>No hay imagen disponible para este libro.</span>
+                </div>
               )}
-              {book.authors && (
-                <p>
-                  Autor: {book.authors.map((author) => author.name).join(", ")}
-                </p>
-              )}
-              {book.languages && (
-                <p>
-                  Lenguaje:{" "}
-                  {book.languages.map((language) => language.name).join(", ")}
-                </p>
-              )}
-              <p className="precio-libros">
-                Precio: <a href="#">{book.price}</a> <b>COP</b>
-              </p>
-              <a
-                href="#"
-                className="ov-btn-slide-top"
-                onClick={(event) => addToCart(event, book)}
-              >
-                <FaShoppingCart size={20} /><b>Añadir al Carrito</b> 
-              </a>
-              <a href="#" className="ov-btn-slide-close">
-                <FaBook size={20} />
-               <b> Ver Más Detalles</b>
-              </a>
-            </li>
+              <Card.Body>
+                {book.title && <Card.Title>{book.title}</Card.Title>}
+                {book.authors && (
+                  <Card.Text>
+                    Autor:{" "}
+                    {book.authors.map((author) => author.name).join(", ")}
+                  </Card.Text>
+                )}
+                {book.languages && (
+                  <Card.Text>
+                    Lenguaje:{" "}
+                    {book.languages.map((language) => language.name).join(", ")}
+                  </Card.Text>
+                )}
+                <Card.Text className="precio-libros">
+                  Precio: <a href="#">{book.price}</a> COP
+                </Card.Text>
+                <Button
+                  type="button" class="btn btn-success"  style={{ margin: '0 5px 5px 40px' }}
+                  onClick={(event) => addToCart(event, book)}
+                >
+                  <FaShoppingCart size={20} />
+                  <b>Añadir al Carrito</b>
+                </Button>
+                <Button type="button" class="btn btn-dark" style={{ margin: '0 0 0 40px'}} >
+                  <FaBook size={20} />
+                  <b>Ver Más Detalles</b>
+                </Button>
+              </Card.Body>
+            </Card>
           ))}
-        </ul>
+        </div>
       ) : (
         <p>No hay libros disponibles.</p>
       )}

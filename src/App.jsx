@@ -1,12 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./Components/Navbar";
 import Inicio from "./Components/Inicio";
+import Navegacion from "./Components/BarraDeNavegacion";
 
 const App = () => {
   return (
     <Router>
-      <Navbar />
+      <Navegacion />
       <Routes>
         <Route path="/" element={<Inicio />} />
       </Routes>

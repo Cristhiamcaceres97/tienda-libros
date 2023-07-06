@@ -1,6 +1,3 @@
-body {
-  background-color: rgb(156, 156, 179);
-}
 
 .book-list {
   display: grid;
@@ -18,27 +15,15 @@ body {
 }
 
 .book-item:hover {
-  background-color: rgb(226, 226, 238);
-}
-
-.book-item h3 {
-  margin-top: 0;
-}
-
-.book-item img {
-  max-width: 100%;
-  height: auto;
-  margin-bottom: 10px;
-}
-
-.book-item button:hover {
-  background-color: #0069d9;
+  background-color: rgb(228, 228, 247);
 }
 
 .cart-icon {
+  position: fixed;
   color: red;
-  font-size: 40px;
+  font-size: 50px;
   margin-right: 5px;
+  z-index: 999;
 }
 
 .cart-count {
@@ -50,16 +35,21 @@ body {
   font-weight: bold;
   font-size: 14px;
   margin-left: 5px;
+  position: relative;
+  bottom: 23px;
+  left: 10px;
 }
 
 .cart-container {
   position: fixed;
-  top: 10px;
-  right: 10px;
+  bottom: 20px;
+  right: 20px;
   z-index: 999;
+  transition: transform 0.3s ease-in-out;
 }
 
 .cart-button {
+  border: 2px green solid;
   background: none;
   border: none;
   cursor: pointer;
@@ -320,3 +310,4 @@ body {
 .remove-book-button svg {
   color: #ff0000;
 }
+ 
