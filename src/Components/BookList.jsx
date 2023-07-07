@@ -15,62 +15,43 @@ const BookList = () => {
   const [cartVisible, setCartVisible] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const categories = ["anime", "drama", "romance", "misterios", "comedia"];
+  const categories = ["arte", "drama", "romance", "misterios", "deportes"];
+  const googleBooksApiKey = "AIzaSyD5rr0qZbEjp0Mk6bLslDPP2xQQTQF3urc";
 
   useEffect(() => {
     const fetchBooks = async () => {
       try {
         const limit = 4;
         const category = categories[currentPage - 1];
-        const response = await axios.get(
-          `https://openlibrary.org/search.json?q=${category}&limit=${limit}`
-        );
+        const cacheKey = `books_${category}_${currentPage}`;
+        let cachedData = localStorage.getItem(cacheKey);
 
-        const booksData = response.data.docs;
-
-        const booksWithImages = await Promise.all(
-          booksData.map(async (bookData) => {
-            const coverId = bookData.cover_i;
-
-            if (coverId) {
-              const coverResponse = await axios.get(
-                `https://covers.openlibrary.org/b/id/${coverId}-L.jpg`
-              );
-
-              const coverUrl = coverResponse.data;
-
-              return {
-                ...bookData,
-                coverUrl,
-              };
-            } else {
-              return {
-                ...bookData,
-                coverUrl: null,
-              };
-            }
-          })
-        );
-
-        const storedPrices = localStorage.getItem("prices");
-        let prices = {};
-
-        if (storedPrices) {
-          prices = JSON.parse(storedPrices);
+        if (cachedData) {
+          // Si los datos están en la caché, los recuperamos
+          setBooks(JSON.parse(cachedData));
         } else {
-          booksWithImages.forEach((book) => {
-            prices[book.key] = generateRandomPrice();
+          const response = await axios.get(
+            `https://www.googleapis.com/books/v1/volumes?q=${category}&maxResults=${limit}&key=${googleBooksApiKey}`
+          );
+
+          const booksData = response.data.items;
+
+          const booksWithImages = booksData.map((bookData) => {
+            const coverUrl = bookData.volumeInfo.imageLinks?.thumbnail || null;
+
+            return {
+              key: bookData.id,
+              title: bookData.volumeInfo.title,
+              author_name: bookData.volumeInfo.authors,
+              first_publish_year: bookData.volumeInfo.publishedDate,
+              coverUrl,
+            };
           });
 
-          localStorage.setItem("prices", JSON.stringify(prices));
+          // Guardamos los datos en la caché
+          localStorage.setItem(cacheKey, JSON.stringify(booksWithImages));
+          setBooks(booksWithImages);
         }
-
-        const booksWithPrice = booksWithImages.map((book) => ({
-          ...book,
-          price: prices[book.key],
-        }));
-
-        setBooks(booksWithPrice);
       } catch (error) {
         console.error("Error al obtener la lista de libros:", error);
       }
