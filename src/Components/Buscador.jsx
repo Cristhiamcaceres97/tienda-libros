@@ -29,8 +29,8 @@ const Buscador = () => {
 
       const data = response.data.docs;
       setResultados(data);
-      setShowResultados(true); // Mostrar resultados de búsqueda
-      setShowComponentes(false); // Ocultar los demás componentes
+      setShowResultados(true); 
+      setShowComponentes(false); 
     } catch (error) {
       console.error("Error al realizar la búsqueda:", error);
     }

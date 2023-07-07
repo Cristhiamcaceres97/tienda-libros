@@ -5,6 +5,7 @@ import "./BookList.css";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Pagination from "./Paginas";
 
 const BookList = () => {
   const [books, setBooks] = useState([]);
@@ -13,81 +14,41 @@ const BookList = () => {
   const [bounce, setBounce] = useState(false);
   const [cartVisible, setCartVisible] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const categories = ["anime", "drama", "romance", "misterios", "comedia"];
 
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const bookIds = [
-          "9781955786225",
-          "9781419728150",
-          "9780613563338",
-          "9781637386231",
-          "9780810994553",
-          "9781788622882",
-          "9780930289362",
-          "9780237535278",
-          "9780553381689",
-          "9783662598061",
-          "9781417750429",
-          "9788484702672",
-          "9781401289256",
-          "9781982115982",
-          "9781779502773",
-          "9780440412670",
-          "9780425288856",
-          "9789654487658",
-        ];
-        const promises = bookIds.map((bookId) =>
-          axios.get(
-            `https://openlibrary.org/api/books?bibkeys=${bookId}&format=json&jscmd=data`
-          )
+        const limit = 4;
+        const category = categories[currentPage - 1];
+        const response = await axios.get(
+          `https://openlibrary.org/search.json?q=${category}&limit=${limit}`
         );
 
-        const responses = await Promise.all(promises);
-        const booksData = responses.map((response) => {
-          const responseData = response.data[Object.keys(response.data)[0]];
-          return responseData ? responseData : null;
-        });
-
-        const validBooksData = booksData.filter(
-          (bookData) => bookData !== null
-        );
+        const booksData = response.data.docs;
 
         const booksWithImages = await Promise.all(
-          validBooksData.map(async (book) => {
-            const isbn = book.isbn && book.isbn[0];
+          booksData.map(async (bookData) => {
+            const coverId = bookData.cover_i;
 
-            if (!isbn) {
-              return book;
-            }
-
-            try {
+            if (coverId) {
               const coverResponse = await axios.get(
-                `https://openlibrary.org/api/volumes/brief/isbn/${isbn}.json`
+                `https://covers.openlibrary.org/b/id/${coverId}-L.jpg`
               );
 
-              const coverId =
-                coverResponse.data &&
-                coverResponse.data.items &&
-                coverResponse.data.items[0] &&
-                coverResponse.data.items[0].cover &&
-                coverResponse.data.items[0].cover.id;
+              const coverUrl = coverResponse.data;
 
-              if (coverId) {
-                const coverUrl = `https://covers.openlibrary.org/b/id/${coverId}-L.jpg`;
-                return {
-                  ...book,
-                  coverUrl,
-                };
-              }
-            } catch (error) {
-              console.error(
-                `Error al obtener la imagen para el libro con ISBN ${isbn}:`,
-                error
-              );
+              return {
+                ...bookData,
+                coverUrl,
+              };
+            } else {
+              return {
+                ...bookData,
+                coverUrl: null,
+              };
             }
-
-            return book;
           })
         );
 
@@ -108,6 +69,7 @@ const BookList = () => {
           ...book,
           price: prices[book.key],
         }));
+
         setBooks(booksWithPrice);
       } catch (error) {
         console.error("Error al obtener la lista de libros:", error);
@@ -115,7 +77,7 @@ const BookList = () => {
     };
 
     fetchBooks();
-  }, []);
+  }, [currentPage, categories]);
 
   useEffect(() => {
     const storedCart = localStorage.getItem("cart");
@@ -168,6 +130,10 @@ const BookList = () => {
     setBounce(false);
   };
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <div>
       <h2 className="cart-container">
@@ -186,11 +152,11 @@ const BookList = () => {
         </button>
       </h2>
       {books.length > 0 ? (
-        <div className="book-list">
+        <div className="book-list" style={{ margin: "30px" }}>
           {books.map((book) => (
             <Card key={book.key} className="book-item">
               {book.coverUrl ? (
-                <Card.Img variant="top" src={book.coverUrl} alt={book.title} />
+                <Card.Img src={book.coverUrl} alt={book.title} />
               ) : (
                 <div className="no-image">
                   <span>No hay imagen disponible para este libro.</span>
@@ -198,29 +164,31 @@ const BookList = () => {
               )}
               <Card.Body>
                 {book.title && <Card.Title>{book.title}</Card.Title>}
-                {book.authors && (
-                  <Card.Text>
-                    Autor:{" "}
-                    {book.authors.map((author) => author.name).join(", ")}
-                  </Card.Text>
+                {book.author_name && (
+                  <Card.Text>Autor: {book.author_name.join(", ")}</Card.Text>
                 )}
-                {book.languages && (
+                {book.first_publish_year && (
                   <Card.Text>
-                    Lenguaje:{" "}
-                    {book.languages.map((language) => language.name).join(", ")}
+                    Año de Publicación: {book.first_publish_year}
                   </Card.Text>
                 )}
                 <Card.Text className="precio-libros">
                   Precio: <a href="#">{book.price}</a> COP
                 </Card.Text>
                 <Button
-                  type="button" class="btn btn-success"  style={{ margin: '0 5px 5px 40px' }}
+                  type="button"
+                  className="btn btn-success"
+                  style={{ margin: "0 5px 5px 40px" }}
                   onClick={(event) => addToCart(event, book)}
                 >
                   <FaShoppingCart size={20} />
                   <b>Añadir al Carrito</b>
                 </Button>
-                <Button type="button" class="btn btn-dark" style={{ margin: '0 0 0 40px'}} >
+                <Button
+                  type="button"
+                  className="btn btn-dark"
+                  style={{ margin: "0 0 0 40px" }}
+                >
                   <FaBook size={20} />
                   <b>Ver Más Detalles</b>
                 </Button>
@@ -270,6 +238,7 @@ const BookList = () => {
           </div>
         </div>
       )}
+      {<Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} />}
     </div>
   );
 };

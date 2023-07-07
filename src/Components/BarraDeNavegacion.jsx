@@ -38,7 +38,7 @@ const Navegacion = () => {
       position={trigger || scrolled ? "fixed" : "static"}
       color={trigger || scrolled ? "primary" : "transparent"}
       sx={{
-        backgroundColor: scrolled ? "#1976d2" : "#5d9a9e",
+        backgroundColor: scrolled ? "#5e8fda" : "#5d9a9e",
       }}
     >
       <Toolbar>

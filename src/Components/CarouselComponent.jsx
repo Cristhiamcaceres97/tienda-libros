@@ -9,12 +9,12 @@ const CarouselComponent = () => {
       <Carousel.Item interval={4000}>
         <img
           className="d-block w-100"
-          src="https://www.mujeresqueleen.com/wp-content/uploads/2019/11/Orgullo-Resena-1200x675.png"
+          src="https://fotografias-compromiso.atresmedia.com/clipping/cmsimages02/2023/02/15/92C7C8E9-6262-48D6-AF7B-95CDBB483331/portada-libro-secta-camilla-lackberg-henrik-fexeus_58.jpg"
           alt="First slide"
         />
         <Carousel.Caption>
           <h5>Paco's Book</h5>
-          <p>Descubre el amor y los desafíos en Orgullo y Prejuicio.</p>
+          <p>Intriga y misterio se entrelazan en 'La secta' de Camilla Läckberg. </p>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item >
