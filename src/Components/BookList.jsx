@@ -207,21 +207,34 @@ const BookList = () => {
           </div>
           <div className="cart-content">
             {Object.values(cart).map((item) => (
-              <div className="cart-item" key={item.book.key}>
-                {item.book.title && <h3>{item.book.title}</h3>}
+              <div className="cart-item" key={item.book.key}><span>
+                
+              </span>
+                {item.book.title && <h6>{item.book.title}</h6>}
                 {item.book.coverUrl ? (
                   <img src={item.book.coverUrl} alt={item.book.title} />
                 ) : (
                   <p>No hay imagen disponible para este libro.</p>
                 )}
-                <p>Precio: {item.book.price} COP</p>
-                <p>Cantidad: {item.quantity}</p>
-                <button
+                <div className="todo-carrito">
+                   <span className="precio-carrito">
+                      <p>Precio: {item.book.price} COP</p>
+                </span>
+            
+                <span className="cantidad-libros">
+                  <p>Cantidad: {item.quantity}</p>
+                </span>
+                <span className="papelera">
+                  <button
                   className="remove-book-button"
                   onClick={() => removeBookFromCart(item)}
                 >
                   <FaTrashAlt size={20} />
                 </button>
+                </span>
+                </div>
+               
+                
               </div>
             ))}
             <div className="cart-total">
@@ -229,6 +242,9 @@ const BookList = () => {
               <button className="empty-cart-button" onClick={emptyCart}>
                 Vaciar Carrito
               </button>
+              <span>
+                <button>Ir A Pagar</button>
+              </span>
             </div>
           </div>
         </div>
