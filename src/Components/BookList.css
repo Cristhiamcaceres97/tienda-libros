@@ -8,15 +8,11 @@
 
 
 .book-item {
-  border: 1px solid #ccc;
-  padding: 20px;
-  background-color: rgb(219, 200, 200);
   cursor: pointer;
+  display: grid;
+  place-items: center;
 }
 
-.book-item:hover {
-  background-color: rgb(228, 228, 247);
-}
 
 .cart-icon {
   position: fixed;

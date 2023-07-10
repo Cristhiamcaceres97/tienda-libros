@@ -9,7 +9,7 @@ import Pagination from "./Paginas";
 
 const BookList = () => {
   const [books, setBooks] = useState([]);
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState({});
   const [cartCount, setCartCount] = useState(0);
   const [bounce, setBounce] = useState(false);
   const [cartVisible, setCartVisible] = useState(false);
@@ -27,7 +27,6 @@ const BookList = () => {
         let cachedData = localStorage.getItem(cacheKey);
 
         if (cachedData) {
-          // Si los datos están en la caché, los recuperamos
           setBooks(JSON.parse(cachedData));
         } else {
           const response = await axios.get(
@@ -38,6 +37,7 @@ const BookList = () => {
 
           const booksWithImages = booksData.map((bookData) => {
             const coverUrl = bookData.volumeInfo.imageLinks?.thumbnail || null;
+            const { price, formattedPrice } = generateRandomPrice();
 
             return {
               key: bookData.id,
@@ -45,10 +45,11 @@ const BookList = () => {
               author_name: bookData.volumeInfo.authors,
               first_publish_year: bookData.volumeInfo.publishedDate,
               coverUrl,
+              price,
+              formattedPrice,
             };
           });
 
-          // Guardamos los datos en la caché
           localStorage.setItem(cacheKey, JSON.stringify(booksWithImages));
           setBooks(booksWithImages);
         }
@@ -76,34 +77,46 @@ const BookList = () => {
 
     const calculateTotalPrice = () => {
       let total = 0;
-      cart.forEach((book) => {
-        total += book.price;
+      Object.values(cart).forEach((item) => {
+        total += parseFloat(item.book.price) * item.quantity;
       });
-      setTotalPrice(total);
+      setTotalPrice(total.toFixed(2));
     };
 
     calculateTotalPrice();
   }, [cart, cartCount]);
 
   const generateRandomPrice = () => {
-    return Math.floor(Math.random() * (30000 - 5000) + 5000);
+    const price = (Math.random() * (30000 - 5000) + 5000).toFixed(2);
+    return {
+      price,
+      formattedPrice: `${price} COP`,
+    };
   };
 
   const addToCart = (event, book) => {
     event.preventDefault();
-    setCart([...cart, book]);
+    if (cart[book.key]) {
+      const updatedCart = { ...cart };
+      updatedCart[book.key].quantity += 1;
+      setCart(updatedCart);
+    } else {
+      const updatedCart = { ...cart, [book.key]: { book, quantity: 1 } };
+      setCart(updatedCart);
+    }
     setCartCount(cartCount + 1);
     setBounce(true);
   };
 
-  const removeBookFromCart = (bookToRemove) => {
-    const updatedCart = cart.filter((book) => book.key !== bookToRemove.key);
+  const removeBookFromCart = (itemToRemove) => {
+    const updatedCart = { ...cart };
+    delete updatedCart[itemToRemove.book.key];
     setCart(updatedCart);
-    setCartCount(cartCount - 1);
+    setCartCount(cartCount - itemToRemove.quantity);
   };
 
   const emptyCart = () => {
-    setCart([]);
+    setCart({});
     setCartCount(0);
   };
 
@@ -154,7 +167,7 @@ const BookList = () => {
                   </Card.Text>
                 )}
                 <Card.Text className="precio-libros">
-                  Precio: <a href="#">{book.price}</a> COP
+                  Precio: <a href="#">{book.formattedPrice}</a>
                 </Card.Text>
                 <Button
                   type="button"
@@ -181,7 +194,7 @@ const BookList = () => {
         <p>No hay libros disponibles.</p>
       )}
 
-      {cart.length > 0 && (
+      {Object.keys(cart).length > 0 && (
         <div className={`cart-popup ${cartVisible ? "open" : ""}`}>
           <div className="cart-header">
             <h2>Carrito de Compras</h2>
@@ -193,18 +206,19 @@ const BookList = () => {
             </button>
           </div>
           <div className="cart-content">
-            {cart.map((book) => (
-              <div className="cart-item" key={book.key}>
-                {book.title && <h3>{book.title}</h3>}
-                {book.coverUrl ? (
-                  <img src={book.coverUrl} alt={book.title} />
+            {Object.values(cart).map((item) => (
+              <div className="cart-item" key={item.book.key}>
+                {item.book.title && <h3>{item.book.title}</h3>}
+                {item.book.coverUrl ? (
+                  <img src={item.book.coverUrl} alt={item.book.title} />
                 ) : (
                   <p>No hay imagen disponible para este libro.</p>
                 )}
-                <p>Precio: {book.price} COP</p>
+                <p>Precio: {item.book.price} COP</p>
+                <p>Cantidad: {item.quantity}</p>
                 <button
                   className="remove-book-button"
-                  onClick={() => removeBookFromCart(book)}
+                  onClick={() => removeBookFromCart(item)}
                 >
                   <FaTrashAlt size={20} />
                 </button>
@@ -219,7 +233,10 @@ const BookList = () => {
           </div>
         </div>
       )}
-      {<Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} />}
+
+      <div>
+        <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      </div>
     </div>
   );
 };
