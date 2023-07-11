@@ -187,7 +187,7 @@ const BookList = () => {
                   <FaBook size={20} />
                   <Link
                     to={`/bookDetails/${book.key}`}
-                    style={{ textDecoration: "none" }}
+                    style={{ textDecoration: "none"}}
                   >
                     Ver Más Detalles
                   </Link>
