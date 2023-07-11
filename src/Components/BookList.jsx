@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaShoppingCart, FaBook, FaTrashAlt } from "react-icons/fa";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import "./BookList.css";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
@@ -184,7 +185,7 @@ const BookList = () => {
                   style={{ margin: "0 0 0 40px" }}
                 >
                   <FaBook size={20} />
-                  <b>Ver Más Detalles</b>
+                  <Link to={`/bookDetails/${book.key}`}>Ver Más Detalles</Link>
                 </Button>
               </Card.Body>
             </Card>
@@ -207,9 +208,8 @@ const BookList = () => {
           </div>
           <div className="cart-content">
             {Object.values(cart).map((item) => (
-              <div className="cart-item" key={item.book.key}><span>
-                
-              </span>
+              <div className="cart-item" key={item.book.key}>
+                <span></span>
                 {item.book.title && <h6>{item.book.title}</h6>}
                 {item.book.coverUrl ? (
                   <img src={item.book.coverUrl} alt={item.book.title} />
@@ -217,24 +217,22 @@ const BookList = () => {
                   <p>No hay imagen disponible para este libro.</p>
                 )}
                 <div className="todo-carrito">
-                   <span className="precio-carrito">
-                      <p>Precio: {item.book.price} COP</p>
-                </span>
-            
-                <span className="cantidad-libros">
-                  <p>Cantidad: {item.quantity}</p>
-                </span>
-                <span className="papelera">
-                  <button
-                  className="remove-book-button"
-                  onClick={() => removeBookFromCart(item)}
-                >
-                  <FaTrashAlt size={20} />
-                </button>
-                </span>
+                  <span className="precio-carrito">
+                    <p>Precio: {item.book.price} COP</p>
+                  </span>
+
+                  <span className="cantidad-libros">
+                    <p>Cantidad: {item.quantity}</p>
+                  </span>
+                  <span className="papelera">
+                    <button
+                      className="remove-book-button"
+                      onClick={() => removeBookFromCart(item)}
+                    >
+                      <FaTrashAlt size={20} />
+                    </button>
+                  </span>
                 </div>
-               
-                
               </div>
             ))}
             <div className="cart-total">
@@ -250,9 +248,7 @@ const BookList = () => {
         </div>
       )}
 
-      <div>
-        <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} />
-      </div>
+      <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} />
     </div>
   );
 };
