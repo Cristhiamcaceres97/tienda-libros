@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { FaShoppingCart, FaBook, FaTrashAlt } from "react-icons/fa";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./BookList.css";
-import { useNavigate } from "react-router-dom";
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
+import { Button, Card } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Pagination from "./Paginas";
 
@@ -37,10 +35,10 @@ const BookList = () => {
           );
 
           const booksData = response.data.items;
-
           const booksWithImages = booksData.map((bookData) => {
             const coverUrl = bookData.volumeInfo.imageLinks?.thumbnail || null;
-            const { price, formattedPrice } = generateRandomPrice();
+            const price = (Math.random() * (30000 - 5000) + 5000).toFixed(2);
+            const formattedPrice = `${price} COP`;
 
             return {
               key: bookData.id,
@@ -104,7 +102,10 @@ const BookList = () => {
       updatedCart[book.key].quantity += 1;
       setCart(updatedCart);
     } else {
-      const updatedCart = { ...cart, [book.key]: { book, quantity: 1 } };
+      const updatedCart = {
+        ...cart,
+        [book.key]: { book, quantity: 1 },
+      };
       setCart(updatedCart);
     }
     setCartCount(cartCount + 1);
@@ -129,6 +130,11 @@ const BookList = () => {
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+  };
+
+  const handlePaymentSuccess = () => {
+    emptyCart();
+    navigate("/");
   };
 
   return (
@@ -170,7 +176,7 @@ const BookList = () => {
                   </Card.Text>
                 )}
                 <Card.Text className="precio-libros">
-                  Precio: <a href="#">{book.formattedPrice}</a>
+                  Precio: {book.formattedPrice}
                 </Card.Text>
                 <Button
                   type="button"
@@ -189,7 +195,7 @@ const BookList = () => {
                   <FaBook size={20} />
                   <Link
                     to={`/bookDetails/${book.key}`}
-                    style={{ textDecoration: "none"}}
+                    style={{ textDecoration: "none" }}
                   >
                     Ver Más Detalles
                   </Link>
@@ -248,7 +254,7 @@ const BookList = () => {
                 Vaciar Carrito
               </button>
               <span>
-              <button onClick={() => navigate("/pago")}>Ir a pagar</button>
+                <button onClick={() => navigate("/pago")}>Ir a pagar</button>
               </span>
             </div>
           </div>

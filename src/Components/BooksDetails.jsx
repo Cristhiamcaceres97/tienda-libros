@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { Loading, Grid } from "@nextui-org/react";
 import Footer from "./Footer";
 import "./BookDetails.css";
-
 
 const BooksDetails = () => {
   const { id } = useParams();
   const [bookDetails, setBookDetails] = useState(null);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const fetchBookDetails = async () => {
@@ -32,14 +33,27 @@ const BooksDetails = () => {
         setBookDetails(bookDetails);
       } catch (error) {
         console.error("Error al obtener los detalles del libro:", error);
+        setError(true);
       }
     };
 
     fetchBookDetails();
   }, [id]);
 
+  if (error) {
+    return <p>Libro no encontrado. ERROR</p>;
+  }
+
   if (!bookDetails) {
-    return <p>Cargando detalles del libro...</p>;
+    return (
+      <p>
+        <Grid.Container gap={2}>
+          <Grid>
+            <Loading color="primary">Cargando...</Loading>
+          </Grid>
+        </Grid.Container>
+      </p>
+    );
   }
 
   return (
@@ -60,7 +74,6 @@ const BooksDetails = () => {
         <span>
           <i>Número de páginas: </i> {bookDetails.pageCount}
         </span>
-        <span></span>
         <span>
           <i>Categoria: </i> {bookDetails.category}
         </span>
@@ -81,9 +94,8 @@ const BooksDetails = () => {
         <i>Sinopsis: </i> {bookDetails.description}
       </div>
       <div className="footer-opcional">
-         <Footer />
+        <Footer />
       </div>
-     
     </div>
   );
 };
