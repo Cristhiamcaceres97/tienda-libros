@@ -1,0 +1,15 @@
+.todo-pago {
+    height: auto;
+}
+
+
+.titulo-pago {
+    display: grid;
+    place-items: center;
+    margin: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    text-transform: uppercase;
+    font-size: 40px;
+    color: rgb(34, 33, 33);
+    ;
+}

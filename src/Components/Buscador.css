@@ -1,0 +1,11 @@
+.libro-item {
+  border: 2px gray solid;
+  width: 30%;
+  margin: 20px;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  box-shadow: 0 0px 25px rgba(0, 0, 0, 0.5);
+  border-radius: 20px;
+  padding: 10px;
+}

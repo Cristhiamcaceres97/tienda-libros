@@ -13,13 +13,14 @@ import {
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import "@mui/material/styles";
+import "./Buscador.css";
 
 const Buscador = () => {
   const [busqueda, setBusqueda] = useState("");
   const [resultados, setResultados] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showResultados, setShowResultados] = useState(false);
-  const [showComponentes, setShowComponentes] = useState(true); // Estado para controlar la visibilidad de los componentes
+  const [showComponentes, setShowComponentes] = useState(true);
 
   const handleSearch = async () => {
     try {
@@ -72,6 +73,19 @@ const Buscador = () => {
                 Publicación: {libro.first_publish_year}
               </p>
               <p className="libro-precio">Precio: No disponible</p>
+  
+              <div className="botones-libro">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => agregarAlCarrito(libro)}
+                >
+                  Añadir al carrito
+                </Button>
+                <Button variant="outlined" onClick={() => verDetalles(libro)}>
+                  Ver más detalles
+                </Button>
+              </div>
             </div>
           </div>
         ))}

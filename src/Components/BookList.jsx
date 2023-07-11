@@ -3,6 +3,7 @@ import { FaShoppingCart, FaBook, FaTrashAlt } from "react-icons/fa";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import "./BookList.css";
+import { useNavigate } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -16,6 +17,7 @@ const BookList = () => {
   const [cartVisible, setCartVisible] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate();
   const categories = ["arte", "drama", "romance", "misterios", "deportes"];
   const googleBooksApiKey = "AIzaSyD5rr0qZbEjp0Mk6bLslDPP2xQQTQF3urc";
 
@@ -246,7 +248,7 @@ const BookList = () => {
                 Vaciar Carrito
               </button>
               <span>
-                <button>Ir A Pagar</button>
+              <button onClick={() => navigate("/pago")}>Ir a pagar</button>
               </span>
             </div>
           </div>
