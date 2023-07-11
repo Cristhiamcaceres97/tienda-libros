@@ -185,7 +185,12 @@ const BookList = () => {
                   style={{ margin: "0 0 0 40px" }}
                 >
                   <FaBook size={20} />
-                  <Link to={`/bookDetails/${book.key}`}>Ver Más Detalles</Link>
+                  <Link
+                    to={`/bookDetails/${book.key}`}
+                    style={{ textDecoration: "none" }}
+                  >
+                    Ver Más Detalles
+                  </Link>
                 </Button>
               </Card.Body>
             </Card>

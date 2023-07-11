@@ -1,0 +1,58 @@
+.todo-detalles {
+  background: radial-gradient(center center, circle, black, #1162ac);
+  color: black;
+  font-size: 20px;
+  height: 1000vh;
+}
+
+.todo-detalles h2 {
+  text-align: center;
+  padding: 20px;
+  color: red;
+}
+
+.todo-detalles i {
+  color: red;
+  text-transform: uppercase;
+}
+
+.todo-detalles p {
+  text-align: center;
+}
+
+.todo-detalles img {
+  width: 25%;
+  margin-left: 20px;
+  height: 480px;
+  box-sizing: border-box;
+  box-shadow: 0 0px 25px rgba(0, 0, 0, 0.5);
+  border-radius: 6%;
+}
+
+.todo-detalles span {
+  position: relative;
+  display: block;
+}
+
+.parrafos {
+  text-align: left;
+  width: 70%;
+  padding: 20px;
+  position: relative;
+  left: 400px;
+  bottom: 450px;
+}
+
+.sinopsis {
+  position: relative;
+  left: 400px;
+  bottom: 400px;
+  text-align: left;
+  width: 70%;
+  padding: 20px;
+  color: rgb(0, 0, 0);
+}
+
+.footer-opcional {
+  height: 5%;
+}
