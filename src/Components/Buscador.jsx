@@ -25,7 +25,7 @@ const Buscador = () => {
   const handleSearch = async () => {
     try {
       const response = await axios.get(
-        `https://openlibrary.org/search.json?q=${busqueda}&limit=10`
+        `https://openlibrary.org/search.json?q=${busqueda}&limit=9`
       );
 
       const data = response.data.docs;

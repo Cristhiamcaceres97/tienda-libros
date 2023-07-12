@@ -113,7 +113,7 @@ const Formulario = () => {
             </ul>
             <Form onSubmit={handleSubmit}>
               <Form.Group className="mb-3" controlId="nombre">
-                <Form.Label>Nombre</Form.Label>
+                <Form.Label>Nombres</Form.Label>
                 <Form.Control type="text" required onChange={handleChange} />
               </Form.Group>
               <Form.Group className="mb-3" controlId="numeroTarjeta">
@@ -182,7 +182,7 @@ const Formulario = () => {
         </Modal.Header>
         <Modal.Body>{modalMessage}</Modal.Body>
         <Modal.Footer>
-        <Button variant="btn btn-dark" onClick={handleAccept}>
+          <Button variant="btn btn-dark" onClick={handleAccept}>
             Aceptar
           </Button>
         </Modal.Footer>

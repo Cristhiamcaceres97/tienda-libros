@@ -88,7 +88,7 @@ const BookList = () => {
   }, [cart, cartCount]);
 
   const generateRandomPrice = () => {
-    const price = (Math.random() * (30000 - 5000) + 5000).toFixed(2);
+    const price = Math.random() * (30000 - 5000) + 5000;
     return {
       price,
       formattedPrice: `${price} COP`,
