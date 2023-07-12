@@ -38,22 +38,23 @@ const BookList = () => {
           );
 
           const booksData = response.data.items;
+          console.log(booksData);
           const booksWithImages = booksData.map((bookData) => {
             const coverUrl = bookData.volumeInfo.imageLinks?.thumbnail || null;
-            const price = (Math.random() * (30000 - 5000) + 5000).toFixed(2);
-            const formattedPrice = `${price} COP`;
 
-            return {
+            const book = {
               key: bookData.id,
               title: bookData.volumeInfo.title,
-              author_name: bookData.volumeInfo.authors,
-              first_publish_year: bookData.volumeInfo.publishedDate,
               coverUrl,
-              price,
-              formattedPrice,
             };
-          });
 
+            const { price, formattedPrice } = generateRandomPrice(book.key);
+
+            book.price = price;
+            book.formattedPrice = formattedPrice;
+
+            return book;
+          });
           localStorage.setItem(cacheKey, JSON.stringify(booksWithImages));
           setBooks(booksWithImages);
         }
@@ -63,7 +64,7 @@ const BookList = () => {
     };
 
     fetchBooks();
-  }, [currentPage, categories, isMobile, googleBooksApiKey]);
+  }, [currentPage, isMobile, categories, googleBooksApiKey]);
 
   useEffect(() => {
     const storedCart = localStorage.getItem("cart");
@@ -90,8 +91,19 @@ const BookList = () => {
     calculateTotalPrice();
   }, [cart, cartCount]);
 
-  const generateRandomPrice = () => {
-    const price = Math.random() * (30000 - 5000) + 5000;
+  const generateRandomPrice = (bookId) => {
+    const storedPrice = localStorage.getItem(`price_${bookId}`);
+
+    if (storedPrice) {
+      return {
+        price: storedPrice,
+        formattedPrice: `${storedPrice} COP`,
+      };
+    }
+
+    const price = Math.floor(Math.random() * (40000 - 10000 + 1)) + 10000;
+    localStorage.setItem(`price_${bookId}`, price);
+
     return {
       price,
       formattedPrice: `${price} COP`,
@@ -170,14 +182,9 @@ const BookList = () => {
               )}
               <Card.Body>
                 {book.title && <Card.Title>{book.title}</Card.Title>}
-                {book.author_name && (
-                  <Card.Text>Autor: {book.author_name.join(", ")}</Card.Text>
-                )}
-                {book.first_publish_year && (
-                  <Card.Text>
-                    Año de Publicación: {book.first_publish_year}
-                  </Card.Text>
-                )}
+                <Card.Text className="autor-libro">
+                  Autor: {book.author_name}
+                </Card.Text>
                 <Card.Text className="precio-libros">
                   Precio: {book.formattedPrice}
                 </Card.Text>
@@ -192,7 +199,7 @@ const BookList = () => {
                 </Button>
                 <Button
                   type="button"
-                  className="btn btn-dark"
+                  className="btn btn-dark cart-button-dos"
                   style={{ margin: "0 0 0 40px" }}
                 >
                   <FaBook size={20} />
@@ -234,7 +241,7 @@ const BookList = () => {
                 )}
                 <div className="todo-carrito">
                   <span className="precio-carrito">
-                    <p>Precio: {item.book.price} COP</p>
+                    <p>Precio: {item.book.formattedPrice} COP</p>
                   </span>
 
                   <span className="cantidad-libros">
@@ -253,11 +260,16 @@ const BookList = () => {
             ))}
             <div className="cart-total">
               <p>Total: {totalPrice} COP</p>
-              <button className="empty-cart-button" onClick={emptyCart}>
+              <button className="btn btn-info" onClick={emptyCart}>
                 Vaciar Carrito
               </button>
               <span>
-                <button onClick={() => navigate("/pago")}>Ir a pagar</button>
+                <button
+                  className="btn btn-dark"
+                  onClick={() => navigate("/pago")}
+                >
+                  Ir a pagar
+                </button>
               </span>
             </div>
           </div>

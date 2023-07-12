@@ -67,9 +67,9 @@
   align-items: center;
 }
 
-.cart-button:focus {
+/* .cart-button:focus {
   outline: none;
-}
+} */
 
 @keyframes bounce {
   0% {
