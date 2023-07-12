@@ -6,6 +6,7 @@ import "./BookList.css";
 import { Button, Card } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Pagination from "./Paginas";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 const BookList = () => {
   const [books, setBooks] = useState([]);
@@ -18,11 +19,13 @@ const BookList = () => {
   const navigate = useNavigate();
   const categories = ["arte", "drama", "romance", "misterios", "deportes"];
   const googleBooksApiKey = "AIzaSyD5rr0qZbEjp0Mk6bLslDPP2xQQTQF3urc";
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const limit = 4;
+        const limit = isMobile ? 2 : 4;
         const category = categories[currentPage - 1];
         const cacheKey = `books_${category}_${currentPage}`;
         let cachedData = localStorage.getItem(cacheKey);
@@ -60,7 +63,7 @@ const BookList = () => {
     };
 
     fetchBooks();
-  }, [currentPage, categories]);
+  }, [currentPage, categories, isMobile, googleBooksApiKey]);
 
   useEffect(() => {
     const storedCart = localStorage.getItem("cart");

@@ -1,9 +1,10 @@
 .book-list {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-gap: 20px;
+  grid-gap: 30px;
   list-style: none;
   place-items: center;
+  
 }
 
 .book-item {
@@ -12,7 +13,7 @@
   width: 260px;
   height: 100%;
   display: flex;
-
+  
 }
 
 .book-item img {
@@ -21,10 +22,12 @@
 }
 
 .book-item:hover {
-  background-color: #F7F7F7;
+  background-color: #f7f7f7;
   transform: scale(1.02);
   border: 1px rgb(0, 0, 0) solid;
 }
+
+
 .cart-icon {
   position: fixed;
   color: red;

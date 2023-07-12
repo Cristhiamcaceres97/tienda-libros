@@ -6,3 +6,16 @@
   place-items: center;
   padding: 15px;
 }
+
+.libro-item {
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+
+.libro-item img:hover {
+  background-color: #F7F7F7;
+  transform: scale(1.05);
+  border: 2px rgb(0, 0, 0) solid;
+}
