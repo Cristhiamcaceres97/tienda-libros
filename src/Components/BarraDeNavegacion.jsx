@@ -1,42 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
   Typography,
   Button,
-  useScrollTrigger,
-  IconButton,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
   useMediaQuery,
   useTheme,
   InputBase,
 } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Search } from "@mui/icons-material";
+import { Search} from "@mui/icons-material";
+import IconButton from "@mui/material/IconButton";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
 import axios from "axios";
-import "@mui/material/styles";
+import "./BarraDeNavegacion.css";
 
 const Navegacion = () => {
-  const [scrolled, setScrolled] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [busqueda, setBusqueda] = useState("");
   const [resultados, setResultados] = useState([]);
   const [showResultados, setShowResultados] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-
-  const handleScroll = () => {
-    const offset = window.scrollY;
-    if (offset > window.innerHeight * 0.1) {
-      setScrolled(true);
-    } else {
-      setScrolled(false);
-    }
-  };
 
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
@@ -48,22 +37,10 @@ const Navegacion = () => {
         `https://www.googleapis.com/books/v1/volumes?q=${busqueda}&maxResults=9`
       );
 
+      console.log(response.data);
+
       const booksData = response.data.items;
-      const results = booksData.map((bookData) => {
-        const title = bookData.volumeInfo.title;
-        const authors = bookData.volumeInfo.authors?.slice(0, 2).join(", ");
-        const publishedDate = bookData.volumeInfo.publishedDate;
-        const coverUrl = bookData.volumeInfo.imageLinks?.thumbnail;
-
-        return {
-          title,
-          authors,
-          publishedDate,
-          coverUrl,
-        };
-      });
-
-      setResultados(results);
+      setResultados(booksData);
       setShowResultados(true);
     } catch (error) {
       console.error("Error al realizar la búsqueda:", error);
@@ -77,16 +54,33 @@ const Navegacion = () => {
     }
   };
 
+  const handleVerDetalle = (bookId) => {
+    window.location.href = `/bookDetails/${bookId}`;
+  };
+
   const renderDesktopMenu = () => {
     return (
       <>
-        <Button color="inherit" component={NavLink} to="/">
+        <Button
+          color="inherit"
+          component={NavLink}
+          to="/"
+          sx={{ "&:hover": { backgroundColor: "blue" }, marginLeft: "5px" }}
+        >
           Inicio
         </Button>
-        <Button color="inherit" component={NavLink}>
+        <Button
+          color="inherit"
+          component={NavLink}
+          sx={{ "&:hover": { backgroundColor: "green" }, marginLeft: "5px" }}
+        >
           Ayuda
         </Button>
-        <Button color="inherit" component={NavLink}>
+        <Button
+          color="inherit"
+          component={NavLink}
+          sx={{ "&:hover": { backgroundColor: "green" }, marginLeft: "5px" }}
+        >
           Contacto
         </Button>
       </>
@@ -104,19 +98,27 @@ const Navegacion = () => {
         >
           <MenuIcon />
         </IconButton>
-        <Drawer
-          anchor="right"
-          open={drawerOpen}
-          onClose={handleDrawerToggle}
-        >
+        <Drawer anchor="right" open={drawerOpen} onClose={handleDrawerToggle}>
           <List>
-            <ListItem button component={NavLink}>
+            <ListItem
+              button
+              component={NavLink}
+              style={{ marginRight: "10px" }}
+            >
               <ListItemText primary="Inicio" />
             </ListItem>
-            <ListItem button component={NavLink}>
+            <ListItem
+              button
+              component={NavLink}
+              style={{ marginRight: "10px" }}
+            >
               <ListItemText primary="Ayuda" />
             </ListItem>
-            <ListItem button component={NavLink}>
+            <ListItem
+              button
+              component={NavLink}
+              style={{ marginRight: "30px" }}
+            >
               <ListItemText primary="Contacto" />
             </ListItem>
           </List>
@@ -133,60 +135,67 @@ const Navegacion = () => {
     return (
       <div className="resultados-container">
         {resultados.map((libro) => (
-          <div key={libro.title} className="libro-item">
+          <div key={libro.id} className="libro-item">
             <img
-              src={libro.coverUrl}
-              alt={libro.title}
+              src={libro.volumeInfo.imageLinks?.thumbnail}
+              alt={libro.volumeInfo.title}
               className="libro-imagen"
             />
             <div className="libro-info">
-              <h2 className="libro-titulo">{libro.title}</h2>
-              <p className="libro-autor">Autor: {libro.authors}</p>
-              <p className="libro-publicacion">
-                Publicación: {libro.publishedDate}
+              <h2 className="libro-titulo">{libro.volumeInfo.title}</h2>
+              <p className="libro-autor">
+                Autor: {libro.volumeInfo.authors?.join(", ") || "NO DISPONIBLE!!"}
               </p>
+              <p className="libro-publicacion">
+                Publicación: {libro.volumeInfo.publishedDate || "NO DISPONIBLE!!"}
+              </p>
+              <Button
+                variant="contained"
+                onClick={() => handleVerDetalle(libro.id)}
+              >
+                Ver más detalles
+              </Button>
             </div>
           </div>
         ))}
       </div>
     );
   };
-
   return (
-    <AppBar
-      position={scrolled ? "fixed" : "static"}
-      color={scrolled ? "primary" : "transparent"}
-      sx={{
-        backgroundColor: scrolled ? "#5e8fda" : "#5d9a9e",
-      }}
-    >
-      <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Mi Tienda
-        </Typography>
-        {isMobile ? renderMobileMenu() : renderDesktopMenu()}
-        <form onSubmit={handleSubmit} className="search-form">
-          <InputBase
-            type="text"
-            placeholder="Buscar libro..."
-            value={busqueda}
-            onChange={(e) => setBusqueda(e.target.value)}
-            sx={{ marginRight: 1 }}
-            className="search-input"
-          />
+    <div className="navegacion-container">
+      <AppBar position="fixed" className="navbar">
+        <Toolbar>
           <Button
-            type="submit"
-            variant="contained"
-            startIcon={<Search />}
-            className="search-button"
-            disabled={busqueda.length < 4}
+            component={NavLink}
+            to="/"
+            variant="h6"
+            sx={{ flexGrow: 1, textAlign: "left", marginRight: "250px" }}
           >
-            Buscar
+            Paco's Book
           </Button>
-        </form>
-      </Toolbar>
+          <form onSubmit={handleSubmit} className="search-form">
+            <InputBase
+              type="text"
+              placeholder="Buscar libro..."
+              value={busqueda}
+              onChange={(e) => setBusqueda(e.target.value)}
+              sx={{ marginRight: 1 }}
+              className="search-input"
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              startIcon={<Search />}
+              className="buscador"
+            >
+              Buscar
+            </Button>
+          </form>
+          {isMobile ? renderMobileMenu() : renderDesktopMenu()}
+        </Toolbar>
+      </AppBar>
       {renderResultados()}
-    </AppBar>
+    </div>
   );
 };
 

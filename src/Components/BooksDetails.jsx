@@ -66,22 +66,22 @@ const BooksDetails = () => {
       </span>
       <div className="parrafos">
         <span>
-          <i>Autor:</i> {bookDetails.authors?.join(", ")}
+          <i>Autor:</i> {bookDetails.authors?.join(", ")  || "NO DISPONIBLE!!"}
         </span>
         <span>
-          <i>Año de publicación: </i> {bookDetails.publishedDate}
+          <i>Año de publicación: </i> {bookDetails.publishedDate  || "NO DISPONIBLE!!"}
         </span>
         <span>
-          <i>Número de páginas: </i> {bookDetails.pageCount}
+          <i>Número de páginas: </i> {bookDetails.pageCount  || "NO DISPONIBLE!!"}
         </span>
         <span>
-          <i>Categoria: </i> {bookDetails.category}
+          <i>Categoria: </i> {bookDetails.category  || "NO DISPONIBLE!!"}
         </span>
         <span>
-          <i>Lenguaje: </i> {bookDetails.language}
+          <i>Lenguaje: </i> {bookDetails.language  || "NO DISPONIBLE!!"}
         </span>
         <span>
-          <i>Formato: </i> {bookDetails.format}
+          <i>Formato: </i> {bookDetails.format  || "NO DISPONIBLE!!"}
         </span>
         {bookDetails.dimensions && (
           <span>
@@ -90,12 +90,15 @@ const BooksDetails = () => {
           </span>
         )}
         <span>
-          <i>ISBN: </i> {bookDetails.isbn}
+          <i>ISBN: </i> {bookDetails.isbn  || "NO DISPONIBLE!!"}
         </span>
       </div>
-      <div className="sinopsis">
-        <i>Sinopsis: </i> {bookDetails.description}
-      </div>
+      <div
+        className="sinopsis"
+        dangerouslySetInnerHTML={{
+          __html: `<i>Sinopsis: </i> ${bookDetails.description  || "NO DISPONIBLE!!"}`,
+        }}
+      ></div>
       <div className="footer-opcional">
         <Footer />
       </div>

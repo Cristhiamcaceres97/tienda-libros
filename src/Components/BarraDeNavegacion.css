@@ -1,0 +1,142 @@
+.navegacion-container {
+  position: relative;
+  background-color: blueviolet;
+  padding-top: 64px; 
+}
+
+.resultados-container {
+  position: absolute;
+  top: 0%;
+  left: 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 30px;
+  list-style: none;
+  place-items: center;
+  z-index: 9999;
+  background-color: rgb(168, 180, 180);
+  padding: 73px;
+  margin-top: 64px;
+}
+
+.navbar {
+    background-color: rgba(94, 143, 218, 0.8);
+    backdrop-filter: blur(5px);
+  }
+  
+  .navbar-transparent {
+    background-color: transparent;
+  }
+
+   /* Barra de navegación */
+.navbar {
+    transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+  }
+  
+  .navbar-transparent {
+    background-color: rgb(6, 6, 88) !important;
+    backdrop-filter: none !important;
+  }
+  
+  .search-input{
+    color: rgb(110, 102, 102);
+    position: relative;
+    right: 100px;
+    border: 1px rgb(65, 60, 60) solid;
+    border-radius: 20px;
+    padding: 3px;
+  }
+
+  .buscador{
+    color: white;
+    position: relative;
+    right: 100px;
+    border: 1px white solid;
+    border-radius: 20px;
+  }
+
+  .search-input::-webkit-input-placeholder {
+    /* WebKit/Blink browsers */
+    color: white;
+  }
+  
+  .search-input::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: white;
+  }
+  
+  .search-input:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: white;
+  }
+  
+  .search-input:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: white;
+  }
+
+  .scrolled {
+    background-color: rgba(94, 84, 148, 0.8) !important;
+    backdrop-filter: blur(10px) !important;
+  }
+  
+  /* Contenedor de resultados */
+  .resultados-container {
+    margin-top: 825px;
+    padding: 20px;
+  }
+  
+  /* Estilos adicionales para el contenido de resultados */
+  .libro-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .libro-imagen {
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+    margin-right: 20px;
+  }
+  
+  .libro-info {
+    flex-grow: 1;
+  }
+  
+  .libro-titulo {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .libro-autor {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  
+  .libro-publicacion {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  /* Estilos para el botón Ver más detalles */
+  .search-button {
+    margin-top: 10px;
+  }
+  
+  /* Estilos adicionales para dispositivos móviles */
+  @media (max-width: 600px) {
+    .search-form {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+    }
+  
+    .search-input {
+      width: 150px;
+      margin-right: 10px;
+    }
+  }
+  

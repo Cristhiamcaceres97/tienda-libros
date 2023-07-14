@@ -202,7 +202,7 @@ const BookList = () => {
                 </Card.Text>
                 <Button
                   type="button"
-                  className="btn btn-success"
+                  className="btn btn-primary"
                   style={{ margin: "0 5px 5px 40px" }}
                   onClick={(event) => addToCart(event, book)}
                 >
@@ -211,13 +211,14 @@ const BookList = () => {
                 </Button>
                 <Button
                   type="button"
-                  className="btn btn-dark cart-button-dos"
+                  className="btn btn-success cart-button-dos"
                   style={{ margin: "0 0 0 40px" }}
                 >
                   <FaBook size={20} />
                   <Link
                     to={`/bookDetails/${book.key}`}
                     style={{ textDecoration: "none" }}
+                    className="ver-detalles-link"
                   >
                     Ver Más Detalles
                   </Link>

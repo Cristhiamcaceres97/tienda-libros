@@ -67,6 +67,11 @@
   align-items: center;
 }
 
+.ver-detalles-link {
+  color: white;
+}
+
+
 .cart-button-dos {
   width: 170px;
 }
