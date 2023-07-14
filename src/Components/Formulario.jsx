@@ -31,6 +31,7 @@ const Formulario = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log(formData)
 
     // Validar que todos los campos estén llenos
     const isFormValid = Object.values(formData).every((value) => value !== "");
@@ -136,7 +137,7 @@ const Formulario = () => {
                 <Form.Label>Ciudad</Form.Label>
                 <Form.Control type="text" required onChange={handleChange} />
               </Form.Group>
-              <Form.Group className="mb-3" controlId="estado">
+              <Form.Group className="mb-3" controlId="departamento">
                 <Form.Label>Departamento</Form.Label>
                 <Form.Control type="text" required onChange={handleChange} />
               </Form.Group>

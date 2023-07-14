@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./BookList.css";
 import { Button, Card } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Pagination from "./Paginas";
+import Pagination from "./Pagination";
 import { useMediaQuery, useTheme } from "@mui/material";
 
 const BookList = () => {
@@ -17,7 +17,13 @@ const BookList = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
-  const categories = ["arte", "drama", "romance", "misterios", "deportes"];
+  const categories = [
+    "arte",
+    "dc",
+    "terror",
+    "misterios",
+    "marketing",
+  ];
   const googleBooksApiKey = "AIzaSyD5rr0qZbEjp0Mk6bLslDPP2xQQTQF3urc";
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -38,23 +44,35 @@ const BookList = () => {
           );
 
           const booksData = response.data.items;
-          console.log(booksData);
-          const booksWithImages = booksData.map((bookData) => {
-            const coverUrl = bookData.volumeInfo.imageLinks?.thumbnail || null;
+          const booksWithImages = booksData
+            .filter((bookData) => bookData.volumeInfo.imageLinks)
+            .map((bookData) => {
+              const coverUrl = bookData.volumeInfo.imageLinks.thumbnail;
 
-            const book = {
-              key: bookData.id,
-              title: bookData.volumeInfo.title,
-              coverUrl,
-            };
+              const authors =
+                bookData.volumeInfo.authors.length > 2
+                  ? bookData.volumeInfo.authors.slice(0, 2)
+                  : bookData.volumeInfo.authors;
 
-            const { price, formattedPrice } = generateRandomPrice(book.key);
+              const title = bookData.volumeInfo.title
+                .split(" ")
+                .slice(0, 3)
+                .join(" ");
 
-            book.price = price;
-            book.formattedPrice = formattedPrice;
+              const book = {
+                key: bookData.id,
+                title,
+                coverUrl,
+                author_name: authors.join(", "),
+              };
 
-            return book;
-          });
+              const { price, formattedPrice } = generateRandomPrice(book.key);
+
+              book.price = price;
+              book.formattedPrice = formattedPrice;
+
+              return book;
+            });
           localStorage.setItem(cacheKey, JSON.stringify(booksWithImages));
           setBooks(booksWithImages);
         }
@@ -64,7 +82,7 @@ const BookList = () => {
     };
 
     fetchBooks();
-  }, [currentPage, isMobile, categories, googleBooksApiKey]);
+  }, [currentPage]);
 
   useEffect(() => {
     const storedCart = localStorage.getItem("cart");

@@ -67,9 +67,9 @@
   align-items: center;
 }
 
-/* .cart-button:focus {
-  outline: none;
-} */
+.cart-button-dos {
+  width: 170px;
+}
 
 @keyframes bounce {
   0% {

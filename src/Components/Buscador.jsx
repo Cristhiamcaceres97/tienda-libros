@@ -21,6 +21,8 @@ const Buscador = () => {
   const [showModal, setShowModal] = useState(false);
   const [showResultados, setShowResultados] = useState(false);
   const [showComponentes, setShowComponentes] = useState(true);
+  const [cart, setCart] = useState({});
+  const [cartCount, setCartCount] = useState(0);
 
   const handleSearch = async () => {
     try {
@@ -30,8 +32,8 @@ const Buscador = () => {
 
       const data = response.data.docs;
       setResultados(data);
-      setShowResultados(true); 
-      setShowComponentes(false); 
+      setShowResultados(true);
+      setShowComponentes(false);
     } catch (error) {
       console.error("Error al realizar la búsqueda:", error);
     }
@@ -48,6 +50,25 @@ const Buscador = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
+  };
+
+  const addToCart = (libro) => {
+    if (cart[libro.key]) {
+      const updatedCart = { ...cart };
+      updatedCart[libro.key].quantity += 1;
+      setCart(updatedCart);
+    } else {
+      const updatedCart = {
+        ...cart,
+        [libro.key]: { libro, quantity: 1 },
+      };
+      setCart(updatedCart);
+    }
+    setCartCount(cartCount + 1);
+  };
+
+  const verDetalles = (libro) => {
+   //pendiente de ver mas detalles de cada libro 
   };
 
   const renderResultados = () => {
@@ -73,12 +94,12 @@ const Buscador = () => {
                 Publicación: {libro.first_publish_year}
               </p>
               <p className="libro-precio">Precio: No disponible</p>
-  
+
               <div className="botones-libro">
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => agregarAlCarrito(libro)}
+                  onClick={() => addToCart(libro)}
                 >
                   Añadir al carrito
                 </Button>

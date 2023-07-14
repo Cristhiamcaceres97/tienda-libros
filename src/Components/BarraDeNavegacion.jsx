@@ -55,24 +55,18 @@ const Navegacion = () => {
           color="inherit"
           component={NavLink}
           to="/"
-          exact
-          activeClassName="active-link"
         >
           Inicio
         </Button>
         <Button
           color="inherit"
           component={NavLink}
-          to="/about"
-          activeClassName="active-link"
         >
           Ayuda
         </Button>
         <Button
           color="inherit"
           component={NavLink}
-          to="/contact"
-          activeClassName="active-link"
         >
           Contacto
         </Button>
@@ -97,13 +91,13 @@ const Navegacion = () => {
           onClose={handleDrawerToggle}
         >
           <List>
-            <ListItem button component={NavLink} to="/" exact>
+            <ListItem button component={NavLink}>
               <ListItemText primary="Inicio" />
             </ListItem>
-            <ListItem button component={NavLink} to="/about">
+            <ListItem button component={NavLink} >
               <ListItemText primary="Ayuda" />
             </ListItem>
-            <ListItem button component={NavLink} to="/contact">
+            <ListItem button component={NavLink} >
               <ListItemText primary="Contacto" />
             </ListItem>
           </List>

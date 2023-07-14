@@ -46,13 +46,13 @@ const BooksDetails = () => {
 
   if (!bookDetails) {
     return (
-      <p>
+      <>
         <Grid.Container gap={2}>
           <Grid>
             <Loading color="primary">Cargando...</Loading>
           </Grid>
         </Grid.Container>
-      </p>
+      </>
     );
   }
 
@@ -83,9 +83,12 @@ const BooksDetails = () => {
         <span>
           <i>Formato: </i> {bookDetails.format}
         </span>
-        <span>
-          <i>Dimensiones: </i> {bookDetails.dimensions}
-        </span>
+        {bookDetails.dimensions && (
+          <span>
+            <i>Dimensiones: </i>
+            {`${bookDetails.dimensions.height} x ${bookDetails.dimensions.width} x ${bookDetails.dimensions.thickness}`}
+          </span>
+        )}
         <span>
           <i>ISBN: </i> {bookDetails.isbn}
         </span>
