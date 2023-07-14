@@ -17,13 +17,7 @@ const BookList = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
-  const categories = [
-    "arte",
-    "dc",
-    "terror",
-    "misterios",
-    "marketing",
-  ];
+  const categories = ["arte", "dc", "terror", "misterios", "marketing"];
   const googleBooksApiKey = "AIzaSyD5rr0qZbEjp0Mk6bLslDPP2xQQTQF3urc";
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
